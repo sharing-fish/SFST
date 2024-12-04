@@ -8,14 +8,14 @@ import {
   SupportButton,
 } from '@backstage/core-components';
 
-export const ExampleComponent = () => (
+export const SfstComponent = () => (
   <Page themeId="tool">
     <Header title="Welcome to SFST!" subtitle="The Sharing Fish Space Telescope!">
       <HeaderLabel label="Owner" value="Sharing Fish" />
       <HeaderLabel label="Lifecycle" value="Alpha" />
     </Header>
     <Content>
-      <ContentHeader title="Plugin title">
+      <ContentHeader title="SFST">
         <SupportButton>Use the card that comes with this plugin to see how many stars are on your GitHub Repos!</SupportButton>
       </ContentHeader>
     </Content>
