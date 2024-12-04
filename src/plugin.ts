@@ -25,7 +25,7 @@ export const SfstPage = sfstPlugin.provide(
   createRoutableExtension({
     name: 'SfstPage',
     component: () =>
-      import('./components/ExampleComponent').then(m => m.ExampleComponent),
+      import('./components/SfstComponent').then(m => m.SfstComponent),
     mountPoint: rootRouteRef,
   }),
 );

@@ -1,0 +1,1 @@
+export { SfstComponent } from './SfstComponent';
