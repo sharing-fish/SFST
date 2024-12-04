@@ -17,7 +17,7 @@ const SfstCard = sfstPlugin.provide(
 const SfstPage = sfstPlugin.provide(
   createRoutableExtension({
     name: "SfstPage",
-    component: () => import('./components/ExampleComponent/index.esm.js').then((m) => m.ExampleComponent),
+    component: () => import('./components/SfstComponent/index.esm.js').then((m) => m.SfstComponent),
     mountPoint: rootRouteRef
   })
 );
