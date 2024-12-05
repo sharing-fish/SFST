@@ -4,14 +4,19 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "license": "Apache-2.0",
-  "private": true,
+  "private": false,
   "publishConfig": {
     "access": "public",
     "main": "dist/index.esm.js",
     "types": "dist/index.d.ts"
   },
+  "repository": "git@github.com:sharing-fish/SFST.git",
   "backstage": {
-    "role": "frontend-plugin"
+    "role": "frontend-plugin",
+    "pluginId": "sfst",
+    "pluginPackages": [
+      "@sharing-fish/sfst"
+    ]
   },
   "sideEffects": false,
   "scripts": {
@@ -50,6 +55,5 @@
     "dist"
   ],
   "description": "Sharing Fish Space Telescope",
-  "repository": "git@github.com:sharing-fish/SFST.git",
   "author": "Gibson Smith <123333011+gdsmith1@users.noreply.github.com>"
 }
