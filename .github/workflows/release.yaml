@@ -67,21 +67,42 @@ jobs:
       - name: Debug package.json
         run: cat package.json
 
+
+
+      # Generate a token for the GitHub App to be able to push changes
+      - name: Generate a Token
+        id: app-token
+        uses: actions/create-github-app-token@31c86eb3b33c9b601a1f60f98dcbfd1d70f379b4 # v1
+        with:
+            app-id: ${{ vars.GH_APP_ID }}
+            private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+            owner: ${{ github.repository_owner }}
+
+      - name: Use the Token
+        env:
+            GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+            git config --global url."https://git:${GH_TOKEN}@github.com".insteadOf https://github.com
+            git config --global user.name '${{ github.actor }}'
+            git config --global user.email '${{ github.actor }}@users.noreply.github.com'
+
+
       - name: Commit and push changes
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
+          git config --global user.name "${GITHUB_ACTOR}"
           git add .
           if git diff-index --quiet HEAD; then
             echo "No changes to commit"
           else
-            git commit -m "Apply lint fixes and update version to ${{ steps.tag_version.outputs.new_tag }}"
-            git push
+            git commit -m "Apply lint fixes and update version to ${{ steps.tag_version.outputs.new_tag }} [skip ci]"
+            git push -f
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: npm publish --provenance --access public
+      - name: Publish to NPM
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
