@@ -43,7 +43,7 @@
     "@material-ui/lab": "^4.0.0-alpha.61",
     "react-router-dom": "^7.0.2",
     "react-use": "^17.2.4",
-    "util": "^0.12.5"
+    "text-encoding": "^0.7.0"
   },
   "peerDependencies": {
     "react": "^16.13.1 || ^17.0.0 || ^18.0.0"
