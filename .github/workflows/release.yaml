@@ -62,7 +62,7 @@ jobs:
           sed -i "s/\"version\": \".*\"/\"version\": \"${{ steps.tag_version.outputs.new_version }}\"/" package.json
 
       - name: Fix any Backstage metadata
-        run: yarn fix-backstage-metadata
+        run: yarn fix
 
     #   - name: Commit and push changes
     #     run: |
@@ -74,9 +74,9 @@ jobs:
     #     env:
     #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    #   - run: npm publish --provenance --access public
+    #     env:
+    #       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     #   - name: Create a GitHub release
     #     uses: ncipollo/release-action@v1.14.0
