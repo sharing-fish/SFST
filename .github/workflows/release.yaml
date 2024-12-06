@@ -51,8 +51,9 @@ jobs:
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.2
         with:
-            dry_run: false # useful for debugging workflow when true
+            dry_run: true # useful for debugging workflow when true
             github_token: ${{ secrets.GITHUB_TOKEN }}
+            default_bump: false
 
 
     # apply steps.tag_version.outputs.new_version to the version for the package.json
@@ -78,39 +79,35 @@ jobs:
             private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
             owner: ${{ github.repository_owner }}
 
-      - name: Use the Token
+      - name: Use the Token to commit and push changes
         env:
             GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
             git config --global url."https://git:${GH_TOKEN}@github.com".insteadOf https://github.com
             git config --global user.name '${{ github.actor }}'
             git config --global user.email '${{ github.actor }}@users.noreply.github.com'
-
-
-      - name: Commit and push changes
-        run: |
-          git config --global user.name "${GITHUB_ACTOR}@users.noreply.github.com"
-          git config --global user.name "${GITHUB_ACTOR}"
-          git add .
-          if git diff-index --quiet HEAD; then
-            echo "No changes to commit"
-          else
-            git commit -m "Apply lint fixes and update version to ${{ steps.tag_version.outputs.new_tag }} [skip ci]"
-            git push -f
-          fi
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            if git diff-index --quiet HEAD; then
+                echo "No changes to commit"
+            else
+                git commit -am "Apply lint fixes and update version to ${{ steps.tag_version.outputs.new_tag }} [skip ci]"
+                git push -f
+            fi
 
       - name: Publish to NPM
+        if: steps.tag_version.outputs.new_tag != ''
         run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Create a GitHub release
-        uses: ncipollo/release-action@v1.14.0
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
+      - name: Create GitHub Release
+        if: steps.tag_version.outputs.new_tag != ''
+        env:
+            GH_TOKEN: ${{ github.token }}
+            TAG: ${{ steps.tag_version.outputs.new_tag }}
+        run: |
+            git tag -a "${TAG}" -m "release $TAG"
+            gh release create "${TAG}" \
+                --generate-notes \
+                --target "$(git rev-parse HEAD)"
 
     
