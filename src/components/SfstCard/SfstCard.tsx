@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 export const SfstCard = () => {
   const classes = useStyles();
   const { entity } = useEntity();
@@ -67,15 +66,19 @@ export const SfstCard = () => {
 
   return (
     <InfoCard title="GitHub Stars" className={classes.card}>
-      <div className={classes.cardContent}>
-        {error ? (
-          <Typography color="error">{error}</Typography>
-        ) : stars !== null ? (
+  <div className={classes.cardContent}>
+    {error ? (
+      <Typography color="error">{error}</Typography>
+    ) : (
+      <>
+        {stars !== null ? (
           <Typography className={classes.starCount}>⭐ {stars}</Typography>
         ) : (
           <CircularProgress className={classes.loading} />
         )}
-      </div>
-    </InfoCard>
+      </>
+    )}
+  </div>
+</InfoCard>
   );
 };
