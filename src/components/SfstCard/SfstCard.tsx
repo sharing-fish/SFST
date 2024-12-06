@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 export const SfstCard = () => {
   const classes = useStyles();
   const { entity } = useEntity();
