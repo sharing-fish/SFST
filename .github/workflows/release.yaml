@@ -38,8 +38,8 @@ jobs:
         if: ${{ steps.lint.outcome == 'failure' }}
         run: yarn lint --fix
 
-    #   - name: Run tests # Uncomment when tests are implemented!
-    #     run: yarn test
+      - name: Run tests # Uncomment when tests are implemented!
+        run: yarn test
 
       - name: Build Typescript Definition
         run: yarn tsc
